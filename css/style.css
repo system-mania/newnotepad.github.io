@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+}
+
+.notes-container {
+  border: 2px solid #ccc;
+}
+
+.note-head {
+  border: #ccc;
+}
+
+.note-name {
+  border: #ccc 2px solid;
+  padding: 10px;
+}
