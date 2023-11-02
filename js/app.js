@@ -27,10 +27,9 @@ function loadNote() {
   if (notes !== null) {
     txtName.value = notes.txtName;
     txtContent.value = notes.txtContent;
-  }
- 
-  else {
+  } else {
     newNoteCreate();
+    loadNotes();
   }
 }
 
@@ -48,8 +47,6 @@ function saveNotes() {
 
 txtName.addEventListener('input', saveNotes);
 txtContent.addEventListener('input', saveNotes);
-
-
 
 function loadNotes() {
   //기존 노트 지우기
@@ -84,11 +81,9 @@ txtName.addEventListener('input', loadNotes);
 newBtn.addEventListener('click', loadNotes);
 
 function deleteNotes(event) {
-
   const message = 'All content will be deleted\nAre you sure to delete all?';
   let result = confirm(message);
-    if (result) {
-
+  if (result) {
     // Get the parent note element
     const noteElement = event.target.parentElement.parentElement;
 
@@ -96,7 +91,7 @@ function deleteNotes(event) {
     const noteId = Array.from(noteElement.classList).find(
       (className) => className !== 'note'
     );
-  
+
     if (localStorage.getItem('prior') === noteId) {
       localStorage.removeItem('prior');
     }
@@ -125,7 +120,6 @@ function replaceText(event) {
 }
 
 function exportTXT() {
- 
   let c = document.createElement('a');
   c.download = txtName.value + '.txt';
 
@@ -143,7 +137,7 @@ exportBtn.addEventListener('click', exportTXT);
 let importButton = document.querySelector('#importTXT');
 
 // Add a click event listener to the button
-importButton.addEventListener('click', function() {
+importButton.addEventListener('click', function () {
   // Create a file input element
   let fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -153,11 +147,11 @@ importButton.addEventListener('click', function() {
   fileInput.click();
 
   // When a file is selected, read its contents
-  fileInput.addEventListener('change', function() {
+  fileInput.addEventListener('change', function () {
     let file = this.files[0];
     let reader = new FileReader();
 
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       let fileName = file.name.replace('.txt', '');
       let txtContent = event.target.result;
 
@@ -173,7 +167,7 @@ importButton.addEventListener('click', function() {
 
     // Read the file as text
     reader.readAsText(file);
-    
   });
 });
+
 loadNotes();
