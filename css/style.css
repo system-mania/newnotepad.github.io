@@ -1,16 +1,146 @@
+nav {
+  background-color: rgb(69, 69, 195);
+  padding: 3px;
+  margin-bottom: 10px;
+
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.btn {
+  border: none;
+  padding: 5px 5px;
+  margin: 2px;
+  border-radius: 5px;
+  font-family: 'paybooc-Light', sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+
+.btn:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-container {
+  display: flex;
+
+  margin-bottom: 10px;
+
+}
+
+.export-btn,
+.import-btn {
+  display: block;
+  text-align: center;
+}
+
+
+#txt-name {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
 .container {
   display: flex;
 }
 
-.notes-container {
-  border: 2px solid #ccc;
+.content-container{
+  width: 100%;
+  margin: 10px;
+  text-align: center;
 }
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1.5px solid #ccc;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+#txt-content {
+  font-size: 1.2rem;
+  resize: none;
+  background-color: #fcf7c7;
+  width: 100vw;
+  height: 90vh;
+  border: none;
+  border-left: 2px solid rgb(208, 160, 144);
+  background-attachment: local;
+  background-image: linear-gradient(
+      to right,
+      rgb(252, 247, 199) 10px,
+      transparent 10px
+    ),
+    linear-gradient(to left, rgb(252, 247, 199) 10px, transparent 10px),
+    repeating-linear-gradient(
+      rgb(252, 247, 199),
+      rgb(252, 247, 199) 30px,
+      rgb(204, 204, 221) 30px,
+      rgb(204, 204, 221) 31px,
+      white 31px
+    );
+  line-height: 31px;
+  padding: 8px 10px 10px 10px;
+}
+
 
 .note-head {
-  border: #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: #fdfd96; /* light yellow */
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* subtle shadow for a 3D effect */
+  margin: 10px;
+}
+.note-name {
+  flex-grow: 1;
+  margin-right: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-.note-name {
-  border: #ccc 2px solid;
-  padding: 10px;
+.note-delete {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.new-notes-container{
+  border: 2px solid rgb(90, 90, 176);
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.notes-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
 }

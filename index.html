@@ -8,18 +8,38 @@
     <script defer src="./js/app.js"></script>
   </head>
   <body>
-    <main>
-      <div class="container">
-        <button class="btn new-btn">new</button>
-
-        <div class="notes-container"></div>
-        <input type="text" id="txt-name" />
-        <textarea
-          name="txt-content"
-          id="txt-content"
-          cols="30"
-          rows="10"></textarea>
+    <header>
+      <nav>
+        <a href="./index.html" class="logo">Notepad</a>
+      </nav>
       </div>
+    </header>
+
+    <main>        
+      <input type="text" id="txt-name" placeholder="Note title" />
+
+
+      <div class="btn-container">
+        <button class="btn export-btn">export</button>
+        <button class="btn import-btn" id="importTXT">import</button>
+      </div>
+        <div class="content-container">
+          <textarea
+            name="txt-content"
+            id="txt-content"
+            rows="19"
+            placeholder="Note content"
+            style="height: 500px; width: 1250px;"></textarea>
+        </div>
+
+      <div class="new-notes-container">
+        <button class="btn new-btn">new</button>
+        <div class="notes-container"></div>
+
+      </div>
+
+
+
     </main>
   </body>
 </html>

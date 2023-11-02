@@ -2,20 +2,20 @@ const txtName = document.querySelector('#txt-name');
 const txtContent = document.querySelector('#txt-content');
 const notesContainer = document.querySelector('.notes-container');
 const newBtn = document.querySelector('.new-btn');
+const exportBtn = document.querySelector('.export-btn');
+const importTXT = document.querySelector('#importTXT');
 
 function newNoteCreate() {
   let id = Date.now();
-  let name = '';
+  let name = 'new note';
   let content = '';
   let lcvalue = { id: id, txtName: name, txtContent: content };
-  console.log(lcvalue);
 
   localStorage.setItem(`notes${lcvalue.id}`, JSON.stringify(lcvalue));
   localStorage.setItem('prior', id);
 
   txtName.value = '';
   txtContent.value = '';
-  txtName.focus();
 }
 
 newBtn.addEventListener('click', newNoteCreate);
@@ -23,9 +23,14 @@ newBtn.addEventListener('click', newNoteCreate);
 function loadNote() {
   let prior = localStorage.getItem('prior');
   let notes = JSON.parse(localStorage.getItem(`notes${prior}`));
+
   if (notes !== null) {
     txtName.value = notes.txtName;
     txtContent.value = notes.txtContent;
+  }
+ 
+  else {
+    newNoteCreate();
   }
 }
 
@@ -44,9 +49,7 @@ function saveNotes() {
 txtName.addEventListener('input', saveNotes);
 txtContent.addEventListener('input', saveNotes);
 
-txtName.addEventListener('input', loadNotes);
 
-newBtn.addEventListener('click', loadNotes);
 
 function loadNotes() {
   //기존 노트 지우기
@@ -68,42 +71,50 @@ function loadNotes() {
       noteDiv.classList.add(noteObj.id);
       noteDiv.innerHTML = `
         <div class="note-head">
-          <div class="note-name" id=${noteObj.id} type="text" onclick="replaceText(event)">${noteObj.txtName}</div>
-          <button class="note-delete" onclick='deleteNotes(event)'>X</button>
+            <div class="note-name" id=${noteObj.id} type="text" onclick="replaceText(event)">${noteObj.txtName}</div>
+            <button class="note-delete" onclick='deleteNotes(event)'>X</button>  
         </div>
       `;
       notesContainer.appendChild(noteDiv);
     }
   }
 }
+
+txtName.addEventListener('input', loadNotes);
+newBtn.addEventListener('click', loadNotes);
+
 function deleteNotes(event) {
-  // Get the parent note element
-  const noteElement = event.target.parentElement.parentElement;
-  console.log(noteElement);
 
-  // Get the note id from the class list
-  const noteId = Array.from(noteElement.classList).find(
-    (className) => className !== 'note'
-  );
-  console.log(noteId);
+  const message = 'All content will be deleted\nAre you sure to delete all?';
+  let result = confirm(message);
+    if (result) {
 
-  if (localStorage.getItem('prior') === noteId) {
-    localStorage.removeItem('prior');
+    // Get the parent note element
+    const noteElement = event.target.parentElement.parentElement;
+
+    // Get the note id from the class list
+    const noteId = Array.from(noteElement.classList).find(
+      (className) => className !== 'note'
+    );
+  
+    if (localStorage.getItem('prior') === noteId) {
+      localStorage.removeItem('prior');
+    }
+    // Remove the note from localStorage
+    localStorage.removeItem(`notes${noteId}`);
+
+    // Remove the note element from the DOM
+    noteElement.remove();
+
+    // Reload the notes
+    loadNotes();
+    loadNote();
   }
-  // Remove the note from localStorage
-  localStorage.removeItem(`notes${noteId}`);
-
-  // Remove the note element from the DOM
-  noteElement.remove();
-
-  // Reload the notes
-  loadNotes();
 }
 
 function replaceText(event) {
   // Get the clicked div element
   const divElement = event.target;
-  console.log(divElement.id);
   let prior = divElement.id;
   localStorage.setItem('prior', prior);
   let notes = JSON.parse(localStorage.getItem(`notes${prior}`));
@@ -112,4 +123,57 @@ function replaceText(event) {
     txtContent.value = notes.txtContent;
   }
 }
+
+function exportTXT() {
+ 
+  let c = document.createElement('a');
+  c.download = txtName.value + '.txt';
+
+  let t = new Blob([txtContent.value], {
+    type: 'text/plain',
+  });
+
+  c.href = window.URL.createObjectURL(t);
+  c.click();
+}
+
+exportBtn.addEventListener('click', exportTXT);
+
+// HTML 요소를 참조합니다.
+let importButton = document.querySelector('#importTXT');
+
+// Add a click event listener to the button
+importButton.addEventListener('click', function() {
+  // Create a file input element
+  let fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.txt';
+
+  // Simulate a click on the file input element
+  fileInput.click();
+
+  // When a file is selected, read its contents
+  fileInput.addEventListener('change', function() {
+    let file = this.files[0];
+    let reader = new FileReader();
+
+    reader.onload = function(event) {
+      let fileName = file.name.replace('.txt', '');
+      let txtContent = event.target.result;
+
+      let id = Date.now();
+      let lcvalue = { id: id, txtName: fileName, txtContent: txtContent };
+
+      localStorage.setItem(`notes${lcvalue.id}`, JSON.stringify(lcvalue));
+      localStorage.setItem('prior', id);
+
+      loadNote();
+      loadNotes();
+    };
+
+    // Read the file as text
+    reader.readAsText(file);
+    
+  });
+});
 loadNotes();
