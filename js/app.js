@@ -29,12 +29,18 @@ function loadNote() {
     txtName.value = notes.txtName;
     txtContent.value = notes.txtContent;
   } else {
-    localStorage.removeItem('prior');
-    newNoteCreate();
+    // Check if there are any other notes in localStorage
+    const otherNotesExist = Object.keys(localStorage).some((key) =>
+      key.startsWith('notes')
+    );
+
+    if (!otherNotesExist) {
+      newNoteCreate();
+    }
+
     loadNotes();
   }
 }
-
 // Save the current note
 function saveNotes() {
   const prior = localStorage.getItem('prior');
