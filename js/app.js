@@ -60,33 +60,40 @@ function loadNotes() {
     notesContainer.removeChild(notesContainer.firstChild);
   }
 
-  // Load all notes from localStorage
+  // Get all notes from localStorage
+  const notes = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-
     if (key.includes('notes')) {
       const note = JSON.parse(localStorage.getItem(key));
-      const noteObj = {
-        id: note.id,
-        txtName: note.txtName,
-        txtContent: note.txtContent,
-      };
-
-      const noteDiv = document.createElement('div');
-      noteDiv.classList.add('note');
-      noteDiv.classList.add(noteObj.id);
-      noteDiv.innerHTML = `
-        <div class="note-head">
-          <div class="note-name" id=${noteObj.id} type="text" onclick="replaceText(event)">${noteObj.txtName}</div>
-          <button class="note-delete" onclick='deleteNotes(event)'>X</button>  
-        </div>
-      `;
-
-      notesContainer.appendChild(noteDiv);
+      notes.push(note);
     }
   }
-}
 
+  // Sort notes by id (creation time)
+  notes.sort((a, b) => a.id - b.id);
+
+  // Display notes
+  for (const note of notes) {
+    const noteObj = {
+      id: note.id,
+      txtName: note.txtName,
+      txtContent: note.txtContent,
+    };
+
+    const noteDiv = document.createElement('div');
+    noteDiv.classList.add('note');
+    noteDiv.classList.add(noteObj.id);
+    noteDiv.innerHTML = `
+      <div class="note-head">
+        <div class="note-name" id=${noteObj.id} type="text" onclick="replaceText(event)">${noteObj.txtName}</div>
+        <button class="note-delete" onclick='deleteNotes(event)'>X</button>  
+      </div>
+    `;
+
+    notesContainer.appendChild(noteDiv);
+  }
+}
 // Delete a note
 function deleteNotes(event) {
   const message = 'All content will be deleted\nAre you sure to delete all?';
